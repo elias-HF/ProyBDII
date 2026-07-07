@@ -16,7 +16,7 @@ public class ConexionSQLServer {
     
     public static Connection obtenerConexion(){
         String conexionURL = "jdbc:sqlserver://localhost:1433;" + // Si se quiere cambiar a otra maquina se deberá cambiar el localhost por el IP de la misma.
-                "database=RestauranteBD;" + 
+                "database=RestauranteBD;" +  // se corriguio el nombre de la bd xd
                 "user = sqlUsuario;" + 
                 "password=root;" + 
                 "loginTimeout=30;" + // Por si la conexion es muy lenta se establece un tiempo límite para la conexión. 
