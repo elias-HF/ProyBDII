@@ -1,35 +1,164 @@
 
 package formularios;
 
+import Conexion.ConexionSQLServer;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 public class FrmInsumo extends javax.swing.JPanel {
 
+    private int idInsumo = -1; // Variable para almacenar el id del insumo.
+    
+    // Constructor de 'FrmInsumo'.
     public FrmInsumo() {
         initComponents();
+        
+        cargarTabla();
+        ocultarColumnaID();
     }
-
+    
+    // LIMPIAR: Método para limpiar los campos después de una acción.
+    public void limpiar(){
+        txtNombre.setText("");
+        cbxTipo.setSelectedIndex(0);
+        cbxUnidad.setSelectedIndex(0);
+        txtStockMin.setText("");
+        txtStockMax.setText(""); // Llamado Stock Actual en la BD
+        idInsumo = -1;
+    }
+    
+    // Ocultar la columna del ID.
+    public void ocultarColumnaID() {
+        tblInsumos.getColumnModel().getColumn(0).setMinWidth(0);
+        tblInsumos.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblInsumos.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+    
+    // Cargar los registros de la base de datos en la tabla.
+    public void cargarTabla(){
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblInsumos.getModel();
+        modeloTabla.setRowCount(0); // Reinicia siempre que se inicie el programa las filas y no se repita la información.
+        
+        PreparedStatement ps;
+        ResultSet rs;
+        ResultSetMetaData rsmd;
+        int columnas;
+        
+        try {
+            Connection con = ConexionSQLServer.obtenerConexion();
+            ps = con.prepareStatement(
+                    "SELECT\n" +
+                    "   i.id_insumo,\n" +
+                    "   i.nombre,\n" +
+                    "   t.nombre_tipo,\n" +
+                    "   u.nombre_unidad,\n" +
+                    "   i.stock_minimo\n" +
+                    "   i.stock_actual,\n" +
+                    "FROM Insumo i\n" +
+                    "INNER JOIN Tipo_Insumo t\n" +
+                    "   ON i.id_tipo_insumo = t.id_tipo_insumo\n" +
+                    "INNER JOIN Unidad_Medida u\n" +
+                    "   ON i.id_unidad_medida = u.id_unidad_medida;"
+            );
+            rs = ps.executeQuery();
+            rsmd = rs.getMetaData();
+            columnas = rsmd.getColumnCount();
+            
+            while(rs.next()){
+                Object[] fila = new Object[columnas];
+                for (int i=0; i < columnas; i++){fila[i] = rs.getObject(i + 1);}
+                modeloTabla.addRow(fila);
+            }
+        } catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
+        }
+    }
+    
+    // Método relacionado con la búsqueda.
+    public void buscarInsumo(){
+        DefaultTableModel modeloTabla = (DefaultTableModel) tblInsumos.getModel();
+        modeloTabla.setRowCount(0);
+        try{
+            Connection con = ConexionSQLServer.obtenerConexion();
+            PreparedStatement ps = con.prepareStatement(
+                    "SELECT\n" +
+                    "   i.id_insumo,\n" +
+                    "   i.nombre,\n" +
+                    "   t.nombre_tipo,\n" +
+                    "   u.nombre_unidad,\n" +
+                    "   i.stock_minimo\n" + 
+                    "   i.stock_actual,\n" +
+                    "FROM Insumo i\n" +
+                    "INNER JOIN Tipo_Insumo t\n" +
+                    "   ON i.id_tipo_insumo = t.id_tipo_insumo\n" +
+                    "INNER JOIN Unidad_Medida u\n" +
+                    "   ON i.id_unidad_medida = u.id_unidad_medida\n" +
+                    "WHERE i.nombre LIKE ?;"
+            );
+            ps.setString(1,"%"+txtNombre.getText()+"%");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                modeloTabla.addRow(new Object[]{
+                    rs.getInt("id_insumo"),
+                    rs.getString("nombre"),
+                    rs.getString("nombre_tipo"),
+                    rs.getString("nombre_unidad"),
+                    rs.getDouble("stock_actual"),
+                    rs.getDouble("stock_minimo")
+                });
+            }
+        }catch(SQLException ex){
+            JOptionPane.showMessageDialog(null,"ERROR: " + ex.toString());
+        }
+    }
+    
+    // Métodos para obtención de id de las tablas vinculadas a insumo.
+    private int obtenerIdTipo(String tipo) { // Respecto a el id del tipo.
+        switch (tipo) {
+            case "Ingrediente": return 1;
+            case "Bebida": return 2;
+            case "Limpieza": return 3;
+            default: return 1;
+        }
+    }
+    
+    private int obtenerIdUnidad(String unidad) { // Respecto a el id de la unidad.
+        switch (unidad) {
+            case "Kilogramo": return 1;
+            case "Litro": return 2;
+            case "Unidad": return 3;
+            default: return 1;
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbxTipo = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cbxUnidad = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtStockMin = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtStockMax = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton5 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        btnCreate = new javax.swing.JButton();
+        btnRead = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblInsumos = new javax.swing.JTable();
 
         setPreferredSize(new java.awt.Dimension(875, 363));
 
@@ -38,47 +167,67 @@ public class FrmInsumo extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel1.setText("Nombre:");
 
-        jTextField1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        txtNombre.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
         jLabel2.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel2.setText("Tipo:");
 
-        jComboBox1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingrediente", "Bebida", "Limpieza" }));
+        cbxTipo.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        cbxTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ingrediente", "Bebida", "Limpieza" }));
 
         jLabel3.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel3.setText("Unidad medida:");
 
-        jComboBox2.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kilogramo", "Litro", "Unidad" }));
+        cbxUnidad.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        cbxUnidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Kilogramo", "Litro", "Unidad" }));
 
         jLabel4.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel4.setText("Stock mínimo:");
 
-        jTextField2.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        txtStockMin.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jLabel5.setText("Stock máximo:");
+        jLabel5.setText("Stock actual:");
 
-        jTextField3.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        txtStockMax.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
-        jButton5.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconAdd.png"))); // NOI18N
-        jButton5.setToolTipText("Agregar");
+        btnCreate.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        btnCreate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconAdd.png"))); // NOI18N
+        btnCreate.setToolTipText("Agregar");
+        btnCreate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCreateMouseClicked(evt);
+            }
+        });
 
-        jButton4.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconReq.png"))); // NOI18N
-        jButton4.setToolTipText("Buscar");
+        btnRead.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        btnRead.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconReq.png"))); // NOI18N
+        btnRead.setToolTipText("Buscar");
+        btnRead.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnReadMouseClicked(evt);
+            }
+        });
 
-        jButton6.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconUpd.png"))); // NOI18N
-        jButton6.setToolTipText("Modificar");
+        btnUpdate.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        btnUpdate.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconUpd.png"))); // NOI18N
+        btnUpdate.setToolTipText("Modificar");
+        btnUpdate.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnUpdateMouseClicked(evt);
+            }
+        });
 
-        jButton7.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconDel.png"))); // NOI18N
-        jButton7.setToolTipText("Eliminar");
+        btnDelete.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        btnDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IconDel.png"))); // NOI18N
+        btnDelete.setToolTipText("Eliminar");
+        btnDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnDeleteMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -90,33 +239,33 @@ public class FrmInsumo extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbxUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnRead, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -129,49 +278,59 @@ public class FrmInsumo extends javax.swing.JPanel {
                             .addComponent(jSeparator1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel2)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cbxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel3)
-                                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(cbxUnidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel4)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtStockMin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel5)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtStockMax, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(38, 38, 38)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRead, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "LISTA DE INSUMOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Consolas", 1, 14))); // NOI18N
 
-        jTable1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblInsumos.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        tblInsumos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "Nombre", "Tipo", "Unidad medida", "Stock mínimo", "Stock máximo"
+                "ID", "Nombre", "Tipo", "Unidad medida", "Stock mínimo", "Stock actual"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tblInsumos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInsumosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblInsumos);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -212,14 +371,150 @@ public class FrmInsumo extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    // AGREGAR: Método para guardar los datos mediante el botón del formulario.
+    private void btnCreateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateMouseClicked
+        String nombre = txtNombre.getText();
+        
+        String tipo = cbxTipo.getSelectedItem().toString();
+        String unidad = cbxUnidad.getSelectedItem().toString();
+        int idTipo = obtenerIdTipo(tipo);
+        int idUnidad = obtenerIdUnidad(unidad);
+        
+        // Validaciones para el nombre y los stocks
+        if(txtNombre.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese el nombre del insumo.");
+            return;
+        }
+        if(txtStockMin.getText().isEmpty() || txtStockMax.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Complete los campos de stock.");
+            return;
+        }
+        
+        double stockAct = Double.parseDouble(txtStockMax.getText());
+        double stockMin = Double.parseDouble(txtStockMin.getText());
+        
+        try{
+            Connection con = ConexionSQLServer.obtenerConexion();
+            PreparedStatement ps = con.prepareStatement(
+                    "INSERT INTO Insumo(nombre,id_tipo_insumo,id_unidad_medida,stock_minimo,stock_actual) VALUES(?,?,?,?,?)"        
+            );
+            ps.setString(1, nombre);
+            ps.setInt(2, idTipo);
+            ps.setInt(3, idUnidad);
+            ps.setDouble(4, stockMin);
+            ps.setDouble(5, stockAct);
+            
+            ps.executeUpdate(); // Se ejecuta la consulta con los datos que se desea guardar.
+            JOptionPane.showMessageDialog(null, "Insumo registrado.");
+            limpiar();
+            cargarTabla();
+            ocultarColumnaID();
+        } catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
+        }
+    }//GEN-LAST:event_btnCreateMouseClicked
+
+    // BUSCAR: Método para buscar según el nombre del insumo.
+    private void btnReadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReadMouseClicked
+        if(txtNombre.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese un nombre.");
+            return;
+        }
+        buscarInsumo();
+    }//GEN-LAST:event_btnReadMouseClicked
+
+    // MODIFICAR: Método por el cual se modificará después de la acción de búsqueda, esto mediante el nombre del insumo;
+    private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
+        if (idInsumo == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione un insumo de la tabla.");
+            return;
+        }
+        
+        String nombre = txtNombre.getText();
+        
+        String tipo = cbxTipo.getSelectedItem().toString();
+        String unidad = cbxUnidad.getSelectedItem().toString();
+        int idTipo = obtenerIdTipo(tipo);
+        int idUnidad = obtenerIdUnidad(unidad);
+        
+        // Validaciones para el nombre y los stocks
+        if(txtNombre.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Ingrese el nombre del insumo.");
+            return;
+        }
+        if(txtStockMin.getText().isEmpty() || txtStockMax.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null,"Complete los campos de stock.");
+            return;
+        }
+        
+        double stockAct = Double.parseDouble(txtStockMax.getText());
+        double stockMin = Double.parseDouble(txtStockMin.getText());
+        
+        try{
+            Connection con = ConexionSQLServer.obtenerConexion();
+            PreparedStatement ps = con.prepareStatement(
+                    "UPDATE Insumo SET nombre=?, id_tipo_insumo=?, id_unidad_medida=?, stock_minimo=?, stock_actual=? WHERE id_insumo=?"
+            );
+            ps.setString(1, nombre);
+            ps.setInt(2, idTipo);
+            ps.setInt(3, idUnidad);
+            ps.setDouble(4, stockMin);
+            ps.setDouble(5, stockAct);
+            ps.setInt(6, idInsumo);
+            
+            ps.executeUpdate(); // Se ejecuta la consulta con los datos que se desea guardar.
+            JOptionPane.showMessageDialog(null, "Insumo modificado.");
+            limpiar();
+            cargarTabla();
+            ocultarColumnaID();
+        } catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
+        }
+    }//GEN-LAST:event_btnUpdateMouseClicked
+
+    // ELIMINAR: Método para eliminar al cliente presente en el formulario.
+    private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
+        if (idInsumo == -1) {
+            JOptionPane.showMessageDialog(null, "Seleccione un insumo de la tabla.");
+            return;
+        }
+       
+        try{
+            Connection con = ConexionSQLServer.obtenerConexion();
+            PreparedStatement ps = con.prepareStatement("DELETE FROM Insumo WHERE id_insumo=?");
+            ps.setInt(1, idInsumo);
+            
+            ps.executeUpdate(); // Se ejecuta la consulta con los datos que se desea guardar.
+            JOptionPane.showMessageDialog(null, "Insumo eliminado.");
+            limpiar();
+            cargarTabla();
+            ocultarColumnaID();
+        } catch (SQLException ex){
+            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
+        }
+    }//GEN-LAST:event_btnDeleteMouseClicked
+
+    // Método para completar los campos al seleccionar una fila de la tabla de manera automática.
+    private void tblInsumosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInsumosMouseClicked
+        int fila = tblInsumos.getSelectedRow();
+
+        if(fila >= 0){
+            idInsumo = Integer.parseInt(tblInsumos.getValueAt(fila,0).toString());
+            txtNombre.setText(tblInsumos.getValueAt(fila,1).toString());
+            cbxTipo.setSelectedItem(tblInsumos.getValueAt(fila, 2));
+            cbxUnidad.setSelectedItem(tblInsumos.getValueAt(fila, 3));
+            txtStockMin.setText(tblInsumos.getValueAt(fila,4).toString());
+            txtStockMax.setText(tblInsumos.getValueAt(fila,5).toString());
+        }
+    }//GEN-LAST:event_tblInsumosMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    public javax.swing.JButton btnCreate;
+    public javax.swing.JButton btnDelete;
+    public javax.swing.JButton btnRead;
+    public javax.swing.JButton btnUpdate;
+    public javax.swing.JComboBox<String> cbxTipo;
+    public javax.swing.JComboBox<String> cbxUnidad;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -229,9 +524,9 @@ public class FrmInsumo extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    public javax.swing.JTable tblInsumos;
+    public javax.swing.JTextField txtNombre;
+    public javax.swing.JTextField txtStockMax;
+    public javax.swing.JTextField txtStockMin;
     // End of variables declaration//GEN-END:variables
 }

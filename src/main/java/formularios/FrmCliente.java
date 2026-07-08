@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class FrmCliente extends javax.swing.JPanel {
-
     private int idCliente = -1; // Variable para almacenar el id del cliente.
     
     // Constructor de 'FrmCliente'.
@@ -243,7 +242,7 @@ public class FrmCliente extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnCreateMouseClicked
 
-    // MODIFICAR: Método por el cual se modificará después de la acción de búsqueda, esto mediante el nombre del cliente;
+    // MODIFICAR: Método por el cual se modificará después de la acción de búsqueda, esto mediante el nombre del cliente.
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
         if (idCliente == -1) {
             JOptionPane.showMessageDialog(null, "Seleccione un cliente de la tabla.");
@@ -303,7 +302,7 @@ public class FrmCliente extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
 
-    // Métodoi para que se rellenen los campos cuando se haga clic en un fila de la tabla.
+    // Método para que se rellenen los campos cuando se haga clic en un fila de la tabla.
     private void tblClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClientesMouseClicked
         int fila = tblClientes.getSelectedRow();
 
