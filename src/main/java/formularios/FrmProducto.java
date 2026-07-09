@@ -30,8 +30,9 @@ public class FrmProducto extends javax.swing.JPanel {
     // Método para limpiar los campos después de una acción.
     public void limpiar(){
         txtNombre.setText("");
-        cbxCategoria.setSelectedItem(0);
+        cbxCategoria.setSelectedIndex(0);
         txtPrecio.setText("");
+        txtCantidadRequerida.setText("");
         
         idProducto = -1;
     }
@@ -56,12 +57,12 @@ public class FrmProducto extends javax.swing.JPanel {
         try {
             Connection con = ConexionSQLServer.obtenerConexion();
             ps = con.prepareStatement(
-                    "SELECT\n" +
-                    "id_producto,\n" +
-                    "nombre,\n" +
-                    "categoria,\n" +
-                    "precio\n" +
-                    "FROM Producto\n" +
+                    "SELECT " +
+                    "id_producto, " +
+                    "nombre, " +
+                    "categoria, " +
+                    "precio " +
+                    "FROM Producto " +
                     "ORDER BY nombre;"
             );
             rs = ps.executeQuery();
@@ -580,13 +581,19 @@ public class FrmProducto extends javax.swing.JPanel {
        
         try{
             Connection con = ConexionSQLServer.obtenerConexion();
-            PreparedStatement ps = con.prepareStatement("DELETE FROM Producto WHERE id_producto=?");
-            ps.setInt(1, idProducto);
+            // Eliminar primero las asociaciones.
+            PreparedStatement ps1 = con.prepareStatement("DELETE FROM Producto_Insumo WHERE id_producto=?");
+            ps1.setInt(1, idProducto);
+            ps1.executeUpdate();
+
+            PreparedStatement ps2 = con.prepareStatement("DELETE FROM Producto WHERE id_producto=?");
+            ps2.setInt(1, idProducto);
+            ps2.executeUpdate(); // Se ejecuta la consulta con los datos que se desea guardar.
             
-            ps.executeUpdate(); // Se ejecuta la consulta con los datos que se desea guardar.
             JOptionPane.showMessageDialog(null, "Producto eliminado.");
             limpiar();
             cargarTabla();
+            ((DefaultTableModel)tblInsumosProducto.getModel()).setRowCount(0); // Limpiar la tabla del todo
             ocultarColumnaID();
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
@@ -614,14 +621,36 @@ public class FrmProducto extends javax.swing.JPanel {
             return;
         }
 
+        if(cantidad <= 0){ // Validación para la cantidad que se ingresa.
+            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.");
+            return;
+        }
+        
         ItemCombo item = (ItemCombo) cbxInsumo.getSelectedItem();
+        if(item == null){ // Evitar un nullpointer para insumos.
+            JOptionPane.showMessageDialog(null,"No hay insumos registrados.");
+            return;
+        }
         int idInsumo = item.getId();
 
         try {
             Connection con = ConexionSQLServer.obtenerConexion();
-            PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO Producto_Insumo(id_producto,id_insumo,cant_requerida) VALUES(?,?,?)"
-            );
+            // Sección para validación y evitar duplicados.
+            PreparedStatement validar = con.prepareStatement("SELECT COUNT(*) FROM Producto_Insumo WHERE id_producto=? AND id_insumo=?");
+
+            validar.setInt(1, idProducto);
+            validar.setInt(2, idInsumo);
+
+            ResultSet rs = validar.executeQuery();
+
+            if(rs.next() && rs.getInt(1) > 0){
+                JOptionPane.showMessageDialog(null,
+                        "Ese insumo ya está asociado al producto.");
+                return;
+            }
+            // Fin de la sección
+            
+            PreparedStatement ps = con.prepareStatement("INSERT INTO Producto_Insumo(id_producto,id_insumo,cant_requerida) VALUES(?,?,?)");
 
             ps.setInt(1, idProducto);
             ps.setInt(2, idInsumo);
@@ -648,7 +677,12 @@ public class FrmProducto extends javax.swing.JPanel {
         }
 
         ItemCombo item = (ItemCombo) cbxInsumo.getSelectedItem();
+        if(item == null){ // Evitar un nullpointer para insumos.
+            JOptionPane.showMessageDialog(null,"No hay insumos registrados.");
+            return;
+        }
         int idInsumo = item.getId();
+        
         try {
             Connection con = ConexionSQLServer.obtenerConexion();
             PreparedStatement ps = con.prepareStatement(

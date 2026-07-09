@@ -52,18 +52,16 @@ public class FrmInsumo extends javax.swing.JPanel {
         try {
             Connection con = ConexionSQLServer.obtenerConexion();
             ps = con.prepareStatement(
-                    "SELECT\n" +
-                    "   i.id_insumo,\n" +
-                    "   i.nombre,\n" +
-                    "   t.nombre_tipo,\n" +
-                    "   u.nombre_unidad,\n" +
-                    "   i.stock_minimo\n" +
-                    "   i.stock_actual,\n" +
-                    "FROM Insumo i\n" +
-                    "INNER JOIN Tipo_Insumo t\n" +
-                    "   ON i.id_tipo_insumo = t.id_tipo_insumo\n" +
-                    "INNER JOIN Unidad_Medida u\n" +
-                    "   ON i.id_unidad_medida = u.id_unidad_medida;"
+                    "SELECT " +
+                    "i.id_insumo, " +
+                    "i.nombre, " +
+                    "t.nombre_tipo, " +
+                    "u.nombre_unidad, " +
+                    "i.stock_minimo, " +
+                    "i.stock_actual " +
+                    "FROM Insumo i " +
+                    "INNER JOIN Tipo_Insumo t ON i.id_tipo_insumo = t.id_tipo_insumo " +
+                    "INNER JOIN Unidad_Medida u ON i.id_unidad_medida = u.id_unidad_medida"
             );
             rs = ps.executeQuery();
             rsmd = rs.getMetaData();
@@ -86,19 +84,17 @@ public class FrmInsumo extends javax.swing.JPanel {
         try{
             Connection con = ConexionSQLServer.obtenerConexion();
             PreparedStatement ps = con.prepareStatement(
-                    "SELECT\n" +
-                    "   i.id_insumo,\n" +
-                    "   i.nombre,\n" +
-                    "   t.nombre_tipo,\n" +
-                    "   u.nombre_unidad,\n" +
-                    "   i.stock_minimo\n" + 
-                    "   i.stock_actual,\n" +
-                    "FROM Insumo i\n" +
-                    "INNER JOIN Tipo_Insumo t\n" +
-                    "   ON i.id_tipo_insumo = t.id_tipo_insumo\n" +
-                    "INNER JOIN Unidad_Medida u\n" +
-                    "   ON i.id_unidad_medida = u.id_unidad_medida\n" +
-                    "WHERE i.nombre LIKE ?;"
+                    "SELECT " +
+                    "i.id_insumo, " +
+                    "i.nombre, " +
+                    "t.nombre_tipo, " +
+                    "u.nombre_unidad, " +
+                    "i.stock_minimo, " +
+                    "i.stock_actual " +
+                    "FROM Insumo i " +
+                    "INNER JOIN Tipo_Insumo t ON i.id_tipo_insumo = t.id_tipo_insumo " +
+                    "INNER JOIN Unidad_Medida u ON i.id_unidad_medida = u.id_unidad_medida " +
+                    "WHERE i.nombre LIKE ?"
             );
             ps.setString(1,"%"+txtNombre.getText()+"%");
             ResultSet rs = ps.executeQuery();
