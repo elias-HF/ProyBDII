@@ -76,14 +76,6 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu11MouseClicked"/>
           </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu12">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Pedido de compra"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenu12MouseClicked"/>
-          </Events>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu13">
           <Properties>
             <Property name="text" type="java.lang.String" value="Producto"/>
@@ -124,7 +116,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="PanelContenedor" alignment="0" pref="698" max="32767" attributes="0"/>
+          <Component id="PanelContenedor" alignment="0" min="-2" pref="698" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>

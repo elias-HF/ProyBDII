@@ -2,6 +2,8 @@
 package formularios;
 
 import Conexion.ConexionSQLServer;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class FrmInsumo extends javax.swing.JPanel {
-
     private int idInsumo = -1; // Variable para almacenar el id del insumo.
     
     // Constructor de 'FrmInsumo'.
@@ -77,6 +78,56 @@ public class FrmInsumo extends javax.swing.JPanel {
         }
     }
     
+    // Método destinado a validaciones para el MODIFICAR y AGREGAR.
+    private boolean validarDatos() {
+        if (cbxUnidad.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Seleccione una unidad.");
+            return false;
+        }
+
+        if (cbxTipo.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Seleccione un tipo.");
+            return false;
+        }
+
+        if (txtNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese el nombre del insumo.");
+            return false;
+        }
+
+        if (txtNombre.getText().length() > 100) {
+            JOptionPane.showMessageDialog(null, "El nombre no puede superar los 100 caracteres.");
+            return false;
+        }
+
+        if (txtStockMin.getText().trim().isEmpty() || txtStockMax.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Complete los campos de stock.");
+            return false;
+        }
+
+        double stockMin;
+        double stockAct;
+
+        try {
+            stockMin = Double.parseDouble(txtStockMin.getText());
+            stockAct = Double.parseDouble(txtStockMax.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Los stocks deben ser numéricos.");
+            return false;
+        }
+
+        if (stockMin < 0 || stockAct < 0) {
+            JOptionPane.showMessageDialog(null, "Los stocks no pueden ser negativos.");
+            return false;
+        }
+
+        if (stockMin > stockAct) {
+            JOptionPane.showMessageDialog(null, "El stock mínimo no puede ser mayor que el stock actual.");
+            return false;
+        }
+        return true;
+    }
+    
     // Método relacionado con la búsqueda.
     public void buscarInsumo(){
         DefaultTableModel modeloTabla = (DefaultTableModel) tblInsumos.getModel();
@@ -104,8 +155,8 @@ public class FrmInsumo extends javax.swing.JPanel {
                     rs.getString("nombre"),
                     rs.getString("nombre_tipo"),
                     rs.getString("nombre_unidad"),
-                    rs.getDouble("stock_actual"),
-                    rs.getDouble("stock_minimo")
+                    rs.getDouble("stock_minimo"),
+                    rs.getDouble("stock_actual")
                 });
             }
         }catch(SQLException ex){
@@ -156,7 +207,7 @@ public class FrmInsumo extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInsumos = new javax.swing.JTable();
 
-        setPreferredSize(new java.awt.Dimension(875, 363));
+        setPreferredSize(new java.awt.Dimension(875, 655));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "REGISTRAR INSUMOS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Consolas", 1, 14))); // NOI18N
 
@@ -164,6 +215,11 @@ public class FrmInsumo extends javax.swing.JPanel {
         jLabel1.setText("Nombre:");
 
         txtNombre.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jLabel2.setText("Tipo:");
@@ -262,7 +318,7 @@ public class FrmInsumo extends javax.swing.JPanel {
                 .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(32, 32, 32)
                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -334,15 +390,15 @@ public class FrmInsumo extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -351,10 +407,10 @@ public class FrmInsumo extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -370,24 +426,16 @@ public class FrmInsumo extends javax.swing.JPanel {
     // AGREGAR: Método para guardar los datos mediante el botón del formulario.
     private void btnCreateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateMouseClicked
         String nombre = txtNombre.getText();
-        
         String tipo = cbxTipo.getSelectedItem().toString();
         String unidad = cbxUnidad.getSelectedItem().toString();
+        
         int idTipo = obtenerIdTipo(tipo);
         int idUnidad = obtenerIdUnidad(unidad);
+       
+        if (!validarDatos()) {return;} // VALIDACIÓN: llamar al método para validar.
         
-        // Validaciones para el nombre y los stocks
-        if(txtNombre.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Ingrese el nombre del insumo.");
-            return;
-        }
-        if(txtStockMin.getText().isEmpty() || txtStockMax.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Complete los campos de stock.");
-            return;
-        }
-        
-        double stockAct = Double.parseDouble(txtStockMax.getText());
         double stockMin = Double.parseDouble(txtStockMin.getText());
+        double stockAct = Double.parseDouble(txtStockMax.getText());
         
         try{
             Connection con = ConexionSQLServer.obtenerConexion();
@@ -405,14 +453,12 @@ public class FrmInsumo extends javax.swing.JPanel {
             limpiar();
             cargarTabla();
             ocultarColumnaID();
-        } catch (SQLException ex){
-            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
-        }
+        } catch (SQLException ex){JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());}
     }//GEN-LAST:event_btnCreateMouseClicked
 
     // BUSCAR: Método para buscar según el nombre del insumo.
     private void btnReadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnReadMouseClicked
-        if(txtNombre.getText().isEmpty()){
+        if(txtNombre.getText().trim().isEmpty()){
             JOptionPane.showMessageDialog(null,"Ingrese un nombre.");
             return;
         }
@@ -421,36 +467,22 @@ public class FrmInsumo extends javax.swing.JPanel {
 
     // MODIFICAR: Método por el cual se modificará después de la acción de búsqueda, esto mediante el nombre del insumo;
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
-        if (idInsumo == -1) {
-            JOptionPane.showMessageDialog(null, "Seleccione un insumo de la tabla.");
-            return;
-        }
-        
-        String nombre = txtNombre.getText();
-        
+        String nombre = txtNombre.getText();     
         String tipo = cbxTipo.getSelectedItem().toString();
         String unidad = cbxUnidad.getSelectedItem().toString();
+        
         int idTipo = obtenerIdTipo(tipo);
         int idUnidad = obtenerIdUnidad(unidad);
         
-        // Validaciones para el nombre y los stocks
-        if(txtNombre.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Ingrese el nombre del insumo.");
-            return;
-        }
-        if(txtStockMin.getText().isEmpty() || txtStockMax.getText().isEmpty()){
-            JOptionPane.showMessageDialog(null,"Complete los campos de stock.");
-            return;
-        }
+        if (!validarDatos()) {return;} // Llamar al validador.
         
-        double stockAct = Double.parseDouble(txtStockMax.getText());
         double stockMin = Double.parseDouble(txtStockMin.getText());
+        double stockAct = Double.parseDouble(txtStockMax.getText());
         
         try{
             Connection con = ConexionSQLServer.obtenerConexion();
-            PreparedStatement ps = con.prepareStatement(
-                    "UPDATE Insumo SET nombre=?, id_tipo_insumo=?, id_unidad_medida=?, stock_minimo=?, stock_actual=? WHERE id_insumo=?"
-            );
+            PreparedStatement ps = con.prepareStatement("UPDATE Insumo SET nombre=?, id_tipo_insumo=?, id_unidad_medida=?, stock_minimo=?, stock_actual=? WHERE id_insumo=?");
+            
             ps.setString(1, nombre);
             ps.setInt(2, idTipo);
             ps.setInt(3, idUnidad);
@@ -463,9 +495,8 @@ public class FrmInsumo extends javax.swing.JPanel {
             limpiar();
             cargarTabla();
             ocultarColumnaID();
-        } catch (SQLException ex){
-            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
         }
+        catch (SQLException ex){JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());}
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     // ELIMINAR: Método para eliminar al cliente presente en el formulario.
@@ -485,8 +516,11 @@ public class FrmInsumo extends javax.swing.JPanel {
             limpiar();
             cargarTabla();
             ocultarColumnaID();
-        } catch (SQLException ex){
-            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
+        } 
+        catch(SQLException ex){ // Modificado el 'catch' para que muestre el mensaje concreto en caso de un insumo referido en otras tablas.
+            if(ex.getErrorCode()==547){JOptionPane.showMessageDialog(null, "No se puede eliminar el insumo porque esta siendo utilizado.");
+            }
+            else{JOptionPane.showMessageDialog(null,"ERROR: "+ex.getMessage());}
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
 
@@ -503,6 +537,17 @@ public class FrmInsumo extends javax.swing.JPanel {
             txtStockMax.setText(tblInsumos.getValueAt(fila,5).toString());
         }
     }//GEN-LAST:event_tblInsumosMouseClicked
+
+    // VALIDACIÓN: evitar que se ingrese algún numero en el nombre.
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char c = evt.getKeyChar();
+        
+        if(!Character.isLetter(c) && c != ' ' && c != KeyEvent.VK_BACK_SPACE){
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "Solo se permiten letras.");
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCreate;

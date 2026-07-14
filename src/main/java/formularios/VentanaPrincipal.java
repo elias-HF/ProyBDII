@@ -20,7 +20,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private FrmMovInventario movInventarioPanel;
     private FrmPago pagoPanel;
     private FrmPedido pedidoPanel;
-    private FrmPedidoCompra pedidoCompraPanel;
     private FrmProducto productoPanel;
     
     // PARTE IMPORTANTE: Código del constructor.
@@ -41,7 +40,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         movInventarioPanel = new FrmMovInventario();
         pagoPanel = new FrmPago();
         pedidoPanel = new FrmPedido();
-        pedidoCompraPanel = new FrmPedidoCompra();
         productoPanel = new FrmProducto();
         
         // Agregar los JPanel's al contenedor.
@@ -53,7 +51,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         PanelContenedor.add(movInventarioPanel, "MOVIMIENTO INVENTARIO");
         PanelContenedor.add(pagoPanel, "PAGO");
         PanelContenedor.add(pedidoPanel, "PEDIDO");
-        PanelContenedor.add(pedidoCompraPanel, "PEDIDO COMPRA");
         PanelContenedor.add(productoPanel, "PRODUCTO");
         
         // El primer JPanel mostrado por defecto: clientePanel.
@@ -74,7 +71,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenu9 = new javax.swing.JMenu();
         jMenu10 = new javax.swing.JMenu();
         jMenu11 = new javax.swing.JMenu();
-        jMenu12 = new javax.swing.JMenu();
         jMenu13 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -160,14 +156,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu11);
 
-        jMenu12.setText("Pedido de compra");
-        jMenu12.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu12MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu12);
-
         jMenu13.setText("Producto");
         jMenu13.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -186,7 +174,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelContenedor, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
+            .addComponent(PanelContenedor, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -216,10 +204,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jMenu11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu11MouseClicked
         card.show(PanelContenedor, "PEDIDO");
     }//GEN-LAST:event_jMenu11MouseClicked
-
-    private void jMenu12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu12MouseClicked
-        card.show(PanelContenedor, "PEDIDO COMPRA");
-    }//GEN-LAST:event_jMenu12MouseClicked
 
     private void jMenu13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu13MouseClicked
         card.show(PanelContenedor, "PRODUCTO");
@@ -256,7 +240,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
-    private javax.swing.JMenu jMenu12;
     private javax.swing.JMenu jMenu13;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

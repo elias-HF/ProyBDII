@@ -2,6 +2,8 @@
 package formularios;
 
 import Conexion.ConexionSQLServer;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +23,9 @@ public class FrmCliente extends javax.swing.JPanel {
         ocultarColumnaID();
     }
 
+    // Validar el formato del correo.
+    private boolean correoValido(String correo){return correo.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");}
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -30,16 +35,18 @@ public class FrmCliente extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        txtTelefono = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         btnCreate = new javax.swing.JButton();
         btnRead = new javax.swing.JButton();
         btnUpdate = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
+        ftfTelefono = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
+
+        setPreferredSize(new java.awt.Dimension(875, 655));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "REGISTRAR CLIENTES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Consolas", 1, 14))); // NOI18N
 
@@ -53,8 +60,11 @@ public class FrmCliente extends javax.swing.JPanel {
         jLabel3.setText("Correo electrónico:");
 
         txtNombre.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
-
-        txtTelefono.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         txtEmail.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
@@ -96,6 +106,13 @@ public class FrmCliente extends javax.swing.JPanel {
             }
         });
 
+        try {
+            ftfTelefono.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        ftfTelefono.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -110,7 +127,7 @@ public class FrmCliente extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(ftfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
@@ -146,7 +163,7 @@ public class FrmCliente extends javax.swing.JPanel {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
-                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(ftfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel3)
@@ -186,14 +203,14 @@ public class FrmCliente extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 841, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -204,8 +221,8 @@ public class FrmCliente extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -222,8 +239,18 @@ public class FrmCliente extends javax.swing.JPanel {
     // AGREGAR: Método para guardar los datos mediante el botón del formulario.
     private void btnCreateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCreateMouseClicked
         String nombre = txtNombre.getText();
-        String telefono = txtTelefono.getText();
+        String telefono = ftfTelefono.getText();
         String Email = txtEmail.getText();
+        
+        if(nombre.isBlank() || telefono.contains(" ") || telefono.isBlank()){ // Validar que los campos no esten vacios.
+            JOptionPane.showMessageDialog(null,"Complete todos los campos.");
+            return;
+        }
+        
+        if(!txtEmail.getText().isBlank() && !correoValido(txtEmail.getText())){ // Usar la validación del correo
+            JOptionPane.showMessageDialog(null,"Correo electronico invalido.");
+            return;
+        }
         
         try{
             Connection con = ConexionSQLServer.obtenerConexion();
@@ -250,8 +277,18 @@ public class FrmCliente extends javax.swing.JPanel {
         }
         
         String nombre = txtNombre.getText();
-        String telefono = txtTelefono.getText();
+        String telefono = ftfTelefono.getText();
         String Email = txtEmail.getText();
+        
+        if(nombre.isBlank() || telefono.contains(" ") || telefono.isBlank()){ // Validar que los campos no esten vacios.
+            JOptionPane.showMessageDialog(null,"Complete todos los campos.");
+            return;
+        }
+        
+        if(!txtEmail.getText().isBlank() && !correoValido(txtEmail.getText())){ // Usar la validación del correo
+            JOptionPane.showMessageDialog(null,"Correo electronico invalido.");
+            return;
+        }
         
         try{
             Connection con = ConexionSQLServer.obtenerConexion();
@@ -266,9 +303,8 @@ public class FrmCliente extends javax.swing.JPanel {
             limpiar();
             cargarTabla();
             ocultarColumnaID();
-        } catch (SQLException ex){
-            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
         }
+        catch (SQLException ex){JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());}
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     // BUSCAR: Método para buscar según el nombre del cliente.
@@ -297,8 +333,10 @@ public class FrmCliente extends javax.swing.JPanel {
             limpiar();
             cargarTabla();
             ocultarColumnaID();
-        } catch (SQLException ex){
-            JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
+        } 
+        catch (SQLException ex) { // Modificación al CATCH para mostrar que un cliente no puede ser elminado porque esta asociado con un pedido.
+            if (ex.getErrorCode() == 547) {JOptionPane.showMessageDialog(null, "No se puede eliminar el cliente porque tiene pedidos registrados.");} 
+            else {JOptionPane.showMessageDialog(null, "ERROR: " + ex.getMessage());}
         }
     }//GEN-LAST:event_btnDeleteMouseClicked
 
@@ -309,15 +347,26 @@ public class FrmCliente extends javax.swing.JPanel {
         if(fila >= 0){
             idCliente = Integer.parseInt(tblClientes.getValueAt(fila,0).toString());
             txtNombre.setText(tblClientes.getValueAt(fila,1).toString());
-            txtTelefono.setText(tblClientes.getValueAt(fila,2).toString());
+            ftfTelefono.setText(tblClientes.getValueAt(fila,2).toString());
             txtEmail.setText(tblClientes.getValueAt(fila,3).toString());
         }
     }//GEN-LAST:event_tblClientesMouseClicked
 
+    // VALIDACIÓN: Evitar que el usuario ingrese algún número en el campo de nombre.
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        char c = evt.getKeyChar();
+
+        if(!Character.isLetter(c) && c != ' ' && c != KeyEvent.VK_BACK_SPACE){
+            evt.consume();
+            Toolkit.getDefaultToolkit().beep();
+            JOptionPane.showMessageDialog(null, "Solo se permiten letras.");
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
     // LIMPIAR: Método para limpiar los campos después de una acción.
     public void limpiar(){
         txtNombre.setText("");
-        txtTelefono.setText("");
+        ftfTelefono.setText("");
         txtEmail.setText("");
         idCliente = -1;
     }
@@ -385,6 +434,7 @@ public class FrmCliente extends javax.swing.JPanel {
     public javax.swing.JButton btnDelete;
     public javax.swing.JButton btnRead;
     public javax.swing.JButton btnUpdate;
+    private javax.swing.JFormattedTextField ftfTelefono;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -395,6 +445,5 @@ public class FrmCliente extends javax.swing.JPanel {
     public javax.swing.JTable tblClientes;
     public javax.swing.JTextField txtEmail;
     public javax.swing.JTextField txtNombre;
-    public javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }

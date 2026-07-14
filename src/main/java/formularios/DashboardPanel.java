@@ -48,6 +48,8 @@ public class DashboardPanel extends javax.swing.JPanel {
 
         panelDashboard = new javax.swing.JPanel();
 
+        panelDashboard.setPreferredSize(new java.awt.Dimension(875, 875));
+
         javax.swing.GroupLayout panelDashboardLayout = new javax.swing.GroupLayout(panelDashboard);
         panelDashboard.setLayout(panelDashboardLayout);
         panelDashboardLayout.setHorizontalGroup(
@@ -56,7 +58,7 @@ public class DashboardPanel extends javax.swing.JPanel {
         );
         panelDashboardLayout.setVerticalGroup(
             panelDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 554, Short.MAX_VALUE)
+            .addGap(0, 655, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -67,7 +69,7 @@ public class DashboardPanel extends javax.swing.JPanel {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelDashboard, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 
