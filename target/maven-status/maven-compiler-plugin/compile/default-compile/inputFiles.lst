@@ -1,13 +1,15 @@
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\Conexion\ConexionSQLServer.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\Conexion\main.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\DashboardPanel.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmCliente.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmFactura.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmInsumo.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmMovInventario.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmPago.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmPedido.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmPedidoCompra.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\FrmProducto.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\InicioPanel.java
-C:\Users\Admin\Documents\NetBeansProjects\ProyBDII\src\main\java\formularios\VentanaPrincipal.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\InicioPanel.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\api\PowerBiService.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmPago.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\Conexion\ConexionSQLServer.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\DashboardPanel.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\Utilidades\ItemCombo.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\VentanaPrincipal.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmMovInventario.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmPedidoCompra.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmCliente.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmInsumo.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\Conexion\main.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmPedido.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmFactura.java
+D:\Usuarios\USUARIO_D\Desktop\Base de datos II\Proyecto\ProyectoBDII(java)\ProyBDII\src\main\java\formularios\FrmProducto.java

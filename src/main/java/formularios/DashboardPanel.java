@@ -37,7 +37,7 @@ public class DashboardPanel extends javax.swing.JPanel {
             // Crear la escena
             Scene escena = new Scene(webView);
             jfxPanel.setScene(escena);
-            
+            //se cambio la forma de como se presenta el dashboard.
             webEngine.load("https://app.powerbi.com/view?r=eyJrIjoiZDI1OGU3ODMtOWUxZC00YjE2LWFiYjQtNTFjOWUzZmMwMTczIiwidCI6ImM0YTY2YzM0LTJiYjctNDUxZi04YmUxLWIyYzI2YTQzMDE1OCIsImMiOjR9");
         });
     }
