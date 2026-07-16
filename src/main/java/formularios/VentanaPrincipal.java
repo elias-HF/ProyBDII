@@ -22,6 +22,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private FrmPedido pedidoPanel;
     private FrmProducto productoPanel;
     
+    //dashBoard en tiempo real
+    private DashboardRealTime dashboardPanel2;
     // PARTE IMPORTANTE: Código del constructor.
     public VentanaPrincipal() {
         initComponents();
@@ -42,6 +44,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pedidoPanel = new FrmPedido();
         productoPanel = new FrmProducto();
         
+        //panel del dashboard en tiempo real
+        dashboardPanel2 = new DashboardRealTime();
         // Agregar los JPanel's al contenedor.
         PanelContenedor.add(inicioPanel, "INICIO");
         PanelContenedor.add(dashboardPanel,"DASHBOARD");
@@ -53,6 +57,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         PanelContenedor.add(pedidoPanel, "PEDIDO");
         PanelContenedor.add(productoPanel, "PRODUCTO");
         
+        //panel del dashboard en tiempo real
+        PanelContenedor.add(dashboardPanel2, "DASHBOARDTIEMPOREAL");
         // El primer JPanel mostrado por defecto: clientePanel.
         card.show(PanelContenedor, "INICIO");
     }
@@ -61,6 +67,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         PanelContenedor = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -72,6 +79,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenu10 = new javax.swing.JMenu();
         jMenu11 = new javax.swing.JMenu();
         jMenu13 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema Gestor del Restaurante");
@@ -164,6 +174,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu13);
 
+        jMenu7.setText("DashBoardTiempoReal");
+        jMenuBar1.add(jMenu7);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -245,7 +258,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
 }
