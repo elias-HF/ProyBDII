@@ -27,6 +27,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // PARTE IMPORTANTE: Código del constructor.
     public VentanaPrincipal() {
         initComponents();
+        
         setLocationRelativeTo(null); // Centrar la ventana
         
         // Configuración del CardLayout.
@@ -62,6 +63,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // El primer JPanel mostrado por defecto: clientePanel.
         card.show(PanelContenedor, "INICIO");
     }
+    
+    
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -86,18 +89,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema Gestor del Restaurante");
 
-        PanelContenedor.setPreferredSize(new java.awt.Dimension(889, 708));
-
-        javax.swing.GroupLayout PanelContenedorLayout = new javax.swing.GroupLayout(PanelContenedor);
-        PanelContenedor.setLayout(PanelContenedorLayout);
-        PanelContenedorLayout.setHorizontalGroup(
-            PanelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 889, Short.MAX_VALUE)
-        );
-        PanelContenedorLayout.setVerticalGroup(
-            PanelContenedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 698, Short.MAX_VALUE)
-        );
+        PanelContenedor.setBackground(new java.awt.Color(102, 204, 255));
+        PanelContenedor.setForeground(new java.awt.Color(102, 204, 255));
+        PanelContenedor.setPreferredSize(new java.awt.Dimension(1360, 762));
+        PanelContenedor.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jMenuBar1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jMenuBar1.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
@@ -175,6 +170,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu13);
 
         jMenu7.setText("DashBoardTiempoReal");
+        jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu7MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jMenu7MousePressed(evt);
+            }
+        });
         jMenuBar1.add(jMenu7);
 
         setJMenuBar(jMenuBar1);
@@ -229,6 +232,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
         card.show(PanelContenedor, "DASHBOARD");
     }//GEN-LAST:event_jMenu2MouseClicked
+
+    private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
+        // Mostramos la pestaña inmediatamente usando el CardLayout
+        card.show(PanelContenedor, "DASHBOARDTIEMPOREAL");
+
+        // Forzamos a Swing a redibujar el contenedor para asegurar que aparezca
+        PanelContenedor.revalidate();
+        PanelContenedor.repaint();
+    }//GEN-LAST:event_jMenu7MouseClicked
+
+    private void jMenu7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu7MousePressed
 
     public static void main(String args[]) {
         try {
