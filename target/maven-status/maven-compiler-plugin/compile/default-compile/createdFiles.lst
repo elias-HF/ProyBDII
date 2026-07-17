@@ -19,7 +19,6 @@ formularios\FrmCliente$3.class
 formularios\FrmInsumo$6.class
 formularios\FrmMovInventario$5.class
 dashBoard\utilities\ConexionMongo.class
-formularios\DashboardPanel.class
 formularios\FrmProducto$4.class
 formularios\VentanaPrincipal$4.class
 formularios\FrmPago$2.class
@@ -69,7 +68,6 @@ formularios\DashboardRealTime$5.class
 formularios\DashboardRealTime$13.class
 formularios\FrmPedido$5.class
 formularios\FrmInsumo$3.class
-formularios\VentanaPrincipal$10.class
 formularios\VentanaPrincipal$1.class
 formularios\FrmProducto$3.class
 formularios\FrmFactura$4.class

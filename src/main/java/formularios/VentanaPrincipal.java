@@ -13,7 +13,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Declaración para los JPanel's.
     private InicioPanel inicioPanel;
-    private DashboardPanel dashboardPanel;
+    //private DashboardPanel dashboardPanel;
     private FrmCliente clientePanel;
     private FrmFactura facturaPanel;
     private FrmInsumo insumoPanel;
@@ -36,7 +36,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         
         // Crear los paneles una sola vez.
         inicioPanel = new InicioPanel();
-        dashboardPanel = new DashboardPanel();
+        //dashboardPanel = new DashboardPanel();
         clientePanel = new FrmCliente();
         facturaPanel = new FrmFactura();
         insumoPanel = new FrmInsumo();
@@ -49,7 +49,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         dashboardPanel2 = new DashboardRealTime();
         // Agregar los JPanel's al contenedor.
         PanelContenedor.add(inicioPanel, "INICIO");
-        PanelContenedor.add(dashboardPanel,"DASHBOARD");
+        //PanelContenedor.add(dashboardPanel,"DASHBOARD");
         PanelContenedor.add(clientePanel, "CLIENTE");
         PanelContenedor.add(facturaPanel, "FACTURA");
         PanelContenedor.add(insumoPanel, "INSUMO");
@@ -74,7 +74,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         PanelContenedor = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
@@ -104,14 +103,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Dashboard");
-        jMenu2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu2MouseClicked(evt);
-            }
-        });
-        jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Cliente");
         jMenu3.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -169,7 +160,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jMenuBar1.add(jMenu13);
 
-        jMenu7.setText("DashBoardTiempoReal");
+        jMenu7.setText("DashBoard");
         jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu7MouseClicked(evt);
@@ -229,10 +220,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         card.show(PanelContenedor, "INICIO");
     }//GEN-LAST:event_jMenu1MouseClicked
 
-    private void jMenu2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu2MouseClicked
-        card.show(PanelContenedor, "DASHBOARD");
-    }//GEN-LAST:event_jMenu2MouseClicked
-
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
         // Mostramos la pestaña inmediatamente usando el CardLayout
         card.show(PanelContenedor, "DASHBOARDTIEMPOREAL");
@@ -270,7 +257,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu13;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;

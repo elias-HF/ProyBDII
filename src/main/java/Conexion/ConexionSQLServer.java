@@ -23,7 +23,7 @@ public class ConexionSQLServer {
                 "trustServerCertificate=true;"; //agregado por si acaso
         try{
             Connection con = DriverManager.getConnection(conexionURL);
-            JOptionPane.showMessageDialog(null, "Conexion exitosa");
+            //JOptionPane.showMessageDialog(null, "Conexion exitosa");
             return con;
         } catch (SQLException ex){
             JOptionPane.showMessageDialog(null, "ERROR: " + ex.toString());
