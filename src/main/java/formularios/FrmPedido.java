@@ -24,6 +24,7 @@ public class FrmPedido extends javax.swing.JPanel {
         cargarProductos();
 
         ocultarColumnaID();
+        ocultarColumnaIDProducto();
     }
 
     // Limpiar formulario
@@ -38,11 +39,18 @@ public class FrmPedido extends javax.swing.JPanel {
         idPedido = -1;
     }
 
-    // Ocultar ID
+    // Ocultar la columna del ID para la tabla de pedido.
     public void ocultarColumnaID() {
         tblPedidos.getColumnModel().getColumn(0).setMinWidth(0);
         tblPedidos.getColumnModel().getColumn(0).setMaxWidth(0);
         tblPedidos.getColumnModel().getColumn(0).setPreferredWidth(0);
+    }
+    
+    // Ocultar la columna ID para la tabla de productos pedido.
+    public void ocultarColumnaIDProducto(){
+        tblProductosdelPedido.getColumnModel().getColumn(0).setMinWidth(0);
+        tblProductosdelPedido.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblProductosdelPedido.getColumnModel().getColumn(0).setPreferredWidth(0);
     }
     
     // Cargar tabla con la información de pedido.
@@ -250,6 +258,7 @@ public class FrmPedido extends javax.swing.JPanel {
             Connection con=ConexionSQLServer.obtenerConexion();
             PreparedStatement ps=con.prepareStatement(
                 "SELECT " +
+                "P.id_producto," + // Inclusión de la ID para que no haya problemas en los nombres :P
                 "P.nombre," +
                 "D.cantidad," +
                 "D.precio_unitario " +
@@ -264,6 +273,7 @@ public class FrmPedido extends javax.swing.JPanel {
 
             while(rs.next()){
                 modelo.addRow(new Object[]{
+                    rs.getInt("id_producto"),
                     rs.getString("nombre"),
                     rs.getInt("cantidad"),
                     rs.getDouble("precio_unitario")
@@ -376,8 +386,8 @@ public class FrmPedido extends javax.swing.JPanel {
         cbxMesero.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         cbxMesero.setModel(new DefaultComboBoxModel<ItemCombo>());
 
-        ftfFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        ftfFecha.setToolTipText("Ejem: 17/0621");
+        ftfFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yy-MM-dd"))));
+        ftfFecha.setToolTipText("Ejem: 25-09-31");
         ftfFecha.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
         ftfHora.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("h:mm:ss"))));
@@ -559,13 +569,13 @@ public class FrmPedido extends javax.swing.JPanel {
         tblPedidos.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         tblPedidos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cliente", "Mesero", "Fecha", "Hora", "Estado"
+                "ID", "Cliente", "Mesero", "Fecha", "Hora", "Estado", "Total"
             }
         ));
         tblPedidos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -597,13 +607,13 @@ public class FrmPedido extends javax.swing.JPanel {
         tblProductosdelPedido.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         tblProductosdelPedido.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Producto", "Cantidad", "Precio unitario"
+                "ID Producto", "Producto", "Cantidad", "Precio unitario"
             }
         ));
         jScrollPane3.setViewportView(tblProductosdelPedido);
@@ -891,23 +901,11 @@ public class FrmPedido extends javax.swing.JPanel {
             return;
         }
 
-        String nombreProducto = tblProductosdelPedido.getValueAt(fila,0).toString();
+        // Obtener directamente el ID del producto (columna oculta)
+        int idProducto = Integer.parseInt(tblProductosdelPedido.getValueAt(fila,0).toString());
 
         try{
             Connection con = ConexionSQLServer.obtenerConexion();
-
-            // Buscar ID del producto por nombre
-            PreparedStatement buscar = con.prepareStatement(
-                "SELECT id_producto "
-                +"FROM Producto "
-                +"WHERE nombre=?"
-            );
-
-            buscar.setString(1,nombreProducto);
-            ResultSet rs = buscar.executeQuery();
-
-            if(!rs.next()){return;}
-            int idProducto = rs.getInt("id_producto");
 
             PreparedStatement ps = con.prepareStatement(
                 "DELETE FROM Detalle_Pedido "
@@ -917,13 +915,12 @@ public class FrmPedido extends javax.swing.JPanel {
 
             ps.setInt(1,idPedido);
             ps.setInt(2,idProducto);
-
             ps.executeUpdate();
-
+            
             actualizarTotalPedido();
-
+            
             JOptionPane.showMessageDialog(null, "Producto eliminado.");
-            cargarProductosPedido();
+            cargarProductosPedido();          
         }
         catch(SQLException ex){JOptionPane.showMessageDialog(null, ex.toString());}
     }//GEN-LAST:event_btnQuitarMouseClicked
@@ -943,7 +940,6 @@ public class FrmPedido extends javax.swing.JPanel {
             cargarProductosPedido();
         }
     }//GEN-LAST:event_tblPedidosMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnAsociar;

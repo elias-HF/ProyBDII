@@ -228,6 +228,8 @@ public class FrmPago extends javax.swing.JPanel {
         cbxFactura.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         cbxFactura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Seleccione --" }));
 
+        ftfFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yy-MM-dd"))));
+        ftfFecha.setToolTipText("Ejem: 25-09-31");
         ftfFecha.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

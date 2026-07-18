@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package dashBoard.utilities;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
-/**
- *
- * @author USUARIO
- */
 public class ConexionMongo {
     // Tu cadena de conexión real a MongoDB Atlas
     private static final String CONNECTION_STRING = "mongodb+srv://eliashuaringa244_db_user:daXgsII4Fy9ICjaj@cluster0.tswulag.mongodb.net";

@@ -263,8 +263,8 @@ public class FrmFactura extends javax.swing.JPanel {
 
         txtCliente.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
-        ftfFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
-        ftfFecha.setToolTipText("Ejem: 17/09/08");
+        ftfFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("yy-MM-dd"))));
+        ftfFecha.setToolTipText("Ejem: 25-09-31");
         ftfFecha.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
 
         jLabel5.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
