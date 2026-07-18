@@ -161,6 +161,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu13);
 
         jMenu7.setText("DashBoard");
+        jMenu7.setFont(new java.awt.Font("Consolas", 0, 12)); // NOI18N
         jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jMenu7MouseClicked(evt);
